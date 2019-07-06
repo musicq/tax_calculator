@@ -35,6 +35,9 @@ class _InputFieldState extends State<InputField> {
               ),
             ),
             keyboardType: TextInputType.number,
+            onChanged: (String value) {
+              print(value);
+            },
           ),
         ],
       ),
