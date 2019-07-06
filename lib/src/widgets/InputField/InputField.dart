@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tax_calculator/src/styles/theme.dart';
 
 class InputField extends StatefulWidget {
   final String label;
@@ -22,14 +23,13 @@ class _InputFieldState extends State<InputField> {
         children: <Widget>[
           Text(
             widget.label,
-            textAlign: TextAlign.start,
-            style: TextStyle(color: Colors.black12),
+            style: Style.tipText,
           ),
           TextField(
             textAlign: TextAlign.start,
             style: TextStyle(fontSize: 30),
             decoration: InputDecoration(
-              icon: Icon(
+              prefixIcon: Icon(
                 Icons.attach_money,
                 size: 20,
               ),
