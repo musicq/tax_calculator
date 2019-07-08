@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tax_calculator/src/styles/theme.dart';
-import 'package:tax_calculator/src/widgets/CardPiece/CardPiece.dart';
+import 'package:tax_calculator/src/bizViews/IncomeOverview/IncomeOverview.dart';
 import 'package:tax_calculator/src/widgets/ChipButton/ChipButton.dart';
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
@@ -20,7 +19,6 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
         controller: controller,
         children: <Widget>[
           Container(
-            color: Style.backgroundColor,
             child: Column(
               children: <Widget>[
                 ChipButton(
@@ -35,12 +33,7 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                 InputField(
                   label: '输入税前薪资收入',
                 ),
-                CardPiece(
-                  img: 'assets/income.png',
-                  title: '123.33',
-                  subTitle: '7月份收入',
-                  onTap: () {},
-                )
+                IncomeOverview(income: 1000),
               ],
             ),
           ),

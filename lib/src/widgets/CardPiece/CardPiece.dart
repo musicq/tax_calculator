@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/styles/theme.dart';
 
+import 'CardPiece.style.dart' as CardPieceStyle;
+
 class CardPiece extends StatelessWidget {
   final String img;
   final String title;
@@ -18,36 +20,26 @@ class CardPiece extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12),
+      borderRadius: CardPieceStyle.borderRadius,
       child: Ink(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-        ),
+        decoration: CardPieceStyle.inkBoxDecoration,
         child: Container(
-          constraints: BoxConstraints.expand(width: 150, height: 180),
-          padding: const EdgeInsets.all(26),
+          constraints: CardPieceStyle.boxSize,
+          padding: CardPieceStyle.boxPadding,
           child: Center(
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: CardPieceStyle.imgPadding,
                   child: Image.asset(
                     img,
-                    height: 45,
                     width: 45,
-                    fit: BoxFit.fill,
+                    height: 45,
+                    fit: BoxFit.contain,
                   ),
                 ),
-                Text(
-                  title,
-                  style: TextStyle(fontSize: 28, color: Colors.black),
-                ),
-                Text(
-                  subTitle,
-                  style: Style.tipText,
-                ),
+                Text(title, style: CardPieceStyle.title),
+                Text(subTitle, style: GlobalStyle.tipText),
               ],
             ),
           ),

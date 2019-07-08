@@ -23,7 +23,7 @@ class _InputFieldState extends State<InputField> {
         children: <Widget>[
           Text(
             widget.label,
-            style: Style.tipText,
+            style: GlobalStyle.tipText,
           ),
           TextField(
             textAlign: TextAlign.start,
