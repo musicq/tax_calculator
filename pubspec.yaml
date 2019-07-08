@@ -42,7 +42,26 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/icon.png
+    - assets/clear.png
+    - assets/month.png
+    - assets/month-2.png
+    - assets/month-active.png
+    - assets/question.png
+    - assets/share.jpg
+    - assets/survey.png
+    - assets/warning.png
+    - assets/wenhao.png
+    - assets/year.png
+    - assets/year-active.png
+    - assets/circle-right.png
+    - assets/deduction.png
+    - assets/down-arrow.png
+    - assets/right-arrow.png
+    - assets/housing.png
+    - assets/income.png
+    - assets/insurance.png
+    - assets/location.png
+    - assets/tax.png
   #  - images/a_dot_burr.jpeg
   #  - images/a_dot_ham.jpeg
 
