@@ -15,16 +15,18 @@ class MainContainer extends StatefulWidget {
 class _MainContainerState extends State<MainContainer> {
   @override
   Widget build(BuildContext context) {
+    final appBar = widget.showAppBar
+        ? AppBar(
+            title: const Text(
+              '报税通',
+              style: TextStyle(color: Colors.black87),
+            ),
+            backgroundColor: Colors.white,
+          )
+        : null;
+
     return Scaffold(
-      appBar: widget.showAppBar
-          ? AppBar(
-              title: const Text(
-                '报税通',
-                style: TextStyle(color: Colors.black87),
-              ),
-              backgroundColor: Colors.white,
-            )
-          : null,
+      appBar: appBar,
       body: widget.body,
     );
   }
