@@ -13,6 +13,7 @@ class MonthlyCalculation extends StatefulWidget {
 
 class _MonthlyCalculationState extends State<MonthlyCalculation> {
   PageController controller = PageController(initialPage: 0);
+  TextEditingController inputCtrl = TextEditingController();
 
   Widget itemWrap({Widget child}) {
     return Container(
@@ -49,6 +50,10 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                       itemWrap(
                         child: InputField(
                           label: '输入税前薪资收入',
+                          controller: inputCtrl,
+                          onChanged: (String v) {
+                            print(v);
+                          },
                         ),
                       ),
                     ],

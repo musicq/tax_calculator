@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/styles/theme.dart';
 
+import 'InputField.style.dart' as InputFieldStyle;
+
 class InputField extends StatefulWidget {
   final String label;
+  final TextEditingController controller;
+  final ValueChanged<String> onChanged;
 
-  InputField({this.label});
+  InputField({this.label, this.controller, this.onChanged});
 
   @override
   State<StatefulWidget> createState() {
@@ -21,23 +25,13 @@ class _InputFieldState extends State<InputField> {
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text(
-            widget.label,
-            style: GlobalStyle.tipText,
-          ),
+          Text(widget.label, style: GlobalStyle.tipText),
           TextField(
-            textAlign: TextAlign.start,
-            style: TextStyle(fontSize: 30),
-            decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.attach_money,
-                size: 20,
-              ),
-            ),
+            controller: widget.controller,
+            style: InputFieldStyle.inputStyle,
+            decoration: InputFieldStyle.inputDecoration,
             keyboardType: TextInputType.number,
-            onChanged: (String value) {
-              print(value);
-            },
+            onChanged: widget.onChanged,
           ),
         ],
       ),
