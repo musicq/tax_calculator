@@ -13,3 +13,5 @@ final inputDecoration = InputDecoration(
 );
 
 const inputStyle = TextStyle(fontSize: 30);
+
+const alertText = TextStyle(fontSize: 16, color: Colors.black54);

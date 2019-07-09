@@ -14,7 +14,7 @@ class MonthlyCalculation extends StatefulWidget {
 }
 
 class _MonthlyCalculationState extends State<MonthlyCalculation> {
-  PageController controller = PageController(initialPage: 0);
+  PageController pageCtrl = PageController(initialPage: 0);
   TextEditingController inputCtrl = TextEditingController();
   double excludeMoney = 4500;
 
@@ -22,7 +22,10 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
   Widget build(BuildContext context) {
     return MainContainer(
       body: PageView(
-        controller: controller,
+        controller: pageCtrl,
+        onPageChanged: (index) {
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
         children: <Widget>[
           SingleChildScrollView(
             child: Container(
@@ -34,7 +37,7 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                     child: ChipButton(
                       text: '更多',
                       onTap: () {
-                        controller.nextPage(
+                        pageCtrl.nextPage(
                           duration: Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
                         );
@@ -46,6 +49,7 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                       Container(
                         padding: MonthlyCalculationStyle.itemPadding,
                         child: InputField(
+                          showTip: false,
                           label: '输入税前薪资收入',
                           controller: inputCtrl,
                           onChanged: (String v) {
@@ -87,7 +91,9 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
               ),
             ),
           ),
-          SpecialAttachment(),
+          SpecialAttachment(
+            pageController: pageCtrl,
+          ),
         ],
       ),
     );
