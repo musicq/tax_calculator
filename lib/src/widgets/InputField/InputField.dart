@@ -40,6 +40,18 @@ class _InputFieldState extends State<InputField> {
         });
   }
 
+  _onTapInput() {
+    final _ctrl = widget.controller;
+
+    if (_ctrl != null) {
+      // 全选
+      _ctrl.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: _ctrl.text.length,
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,6 +81,7 @@ class _InputFieldState extends State<InputField> {
           ),
           TextField(
             controller: widget.controller,
+            onTap: _onTapInput,
             style: InputFieldStyle.inputStyle,
             decoration: InputFieldStyle.inputDecoration,
             keyboardType: TextInputType.number,
