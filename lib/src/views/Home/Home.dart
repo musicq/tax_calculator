@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/views/MonthlyCalculation/MonthlyCalculation.dart';
 
 // bottom navigation
@@ -21,9 +22,9 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final List<Widget> _views = [
+  List<Widget> _views = [
     // 月度计算
-    MonthlyCalculation(),
+    MonthlyCalculation(initMoney: D('2000')),
     Text('年度计算'),
   ];
 
