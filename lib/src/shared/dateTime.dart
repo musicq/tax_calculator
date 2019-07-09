@@ -13,6 +13,8 @@ const Map<int, String> _months = {
   12: '十二',
 };
 
+/// translateMonth 是将数字转换成中文月份
+/// 比如：translateMonth(1) -> 一月
 String translateMonth(int month) {
   return '${_months[month]}月';
 }

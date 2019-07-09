@@ -58,6 +58,40 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
     income$.add(v == '' ? D('0') : D(v));
   }
 
+  Widget specialBar(BuildContext context) {
+    return Container(
+      padding: MonthlyCalculationStyle.itemPadding,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text('专项附加扣除', style: GlobalStyle.tipText),
+          GestureDetector(
+            onTap: () {
+              Navigator.of(context).pushNamed('/special-attachment');
+            },
+            child: Row(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: Text(
+                    excludeMoney.toString(),
+                    style: MonthlyCalculationStyle.moreText,
+                  ),
+                ),
+                Image.asset(
+                  'assets/circle-right.png',
+                  width: 18,
+                  height: 18,
+                  fit: BoxFit.contain,
+                )
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return MainContainer(
@@ -79,6 +113,7 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                   ),
                   Column(
                     children: <Widget>[
+                      // 税前薪资框
                       Container(
                         padding: MonthlyCalculationStyle.itemPadding,
                         child: InputField(
@@ -88,38 +123,8 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                           onChanged: _onIncomeChange,
                         ),
                       ),
-                      Container(
-                        padding: MonthlyCalculationStyle.itemPadding,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: <Widget>[
-                            Text('专项附加扣除', style: GlobalStyle.tipText),
-                            GestureDetector(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .pushNamed('/special-attachment');
-                              },
-                              child: Row(
-                                children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.only(right: 5),
-                                    child: Text(
-                                      excludeMoney.toString(),
-                                      style: MonthlyCalculationStyle.moreText,
-                                    ),
-                                  ),
-                                  Image.asset(
-                                    'assets/circle-right.png',
-                                    width: 18,
-                                    height: 18,
-                                    fit: BoxFit.contain,
-                                  )
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                      // 专项附加扣除 bar
+                      specialBar(context),
                       // 收入概览
                       IncomeOverview(income$: income$),
                     ],

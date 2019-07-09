@@ -1,11 +1,11 @@
-import 'dart:async';
-
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/dateTime.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/widgets/CardPiece/CardPiece.dart';
+
+import 'IncomeOverview.service.dart';
 
 class IncomeOverview extends StatefulWidget {
   final BehaviorSubject<Decimal> income$;
@@ -17,11 +17,7 @@ class IncomeOverview extends StatefulWidget {
 }
 
 class _IncomeOverviewState extends State<IncomeOverview> {
-  StreamSubscription<Decimal> incomeAfterTax$;
-  StreamSubscription<Decimal> tax$;
-  StreamSubscription<Decimal> providentFund$;
-  StreamSubscription<Decimal> insurance$;
-
+  final CompositeSubscription _sub = CompositeSubscription();
   Decimal incomeAfterTax = D('0');
   Decimal tax = D('0');
   Decimal providentFund = D('0');
@@ -33,19 +29,24 @@ class _IncomeOverviewState extends State<IncomeOverview> {
   void initState() {
     super.initState();
 
-    incomeAfterTax$ = widget.income$
-        .map((income) => income * D('0.1'))
-        .listen((r) => setState(() => incomeAfterTax = r));
+    // 税后工资
+    _sub.add(calcIncomeAfterTax(widget.income$)
+        .listen((v) => setState(() => incomeAfterTax = v)));
+    // 个税
+    _sub.add(calcTax(widget.income$).listen((v) => setState(() => tax = v)));
+    // 公积金
+    _sub.add(calcProvidentFund(widget.income$)
+        .listen((v) => setState(() => providentFund = v)));
+    // 社保
+    _sub.add(calcInsurance(widget.income$)
+        .listen((v) => setState(() => insurance = v)));
   }
 
   @override
   void dispose() {
     super.dispose();
 
-    incomeAfterTax$.cancel();
-//    tax$.cancel();
-//    providentFund$.cancel();
-//    insurance$.cancel();
+    _sub.dispose();
   }
 
   @override
