@@ -1,6 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/views/MonthlyCalculation/MonthlyCalculation.dart';
 
+// bottom navigation
+const kNavigationItems = [
+  {
+    'icon': 'assets/month.png',
+    'activeIcon': 'assets/month-active.png',
+    'title': '月度计算',
+  },
+  {
+    'icon': 'assets/year.png',
+    'activeIcon': 'assets/year-active.png',
+    'title': '年度计算',
+  },
+];
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -16,24 +30,18 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   Widget bottomNavigationBarWidget() {
+    final items = kNavigationItems
+        .map((var item) => BottomNavigationBarItem(
+            icon: Image.asset(item['icon'], width: 30, height: 30),
+            activeIcon: Image.asset(item['activeIcon'], width: 30, height: 30),
+            title: Text(item['title'])))
+        .toList();
+
     return BottomNavigationBar(
       currentIndex: _currentIndex,
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black38,
-      items: [
-        BottomNavigationBarItem(
-          icon: Image.asset('assets/month.png', width: 30, height: 30),
-          activeIcon:
-              Image.asset('assets/month-active.png', width: 30, height: 30),
-          title: Text('月度计算'),
-        ),
-        BottomNavigationBarItem(
-          icon: Image.asset('assets/year.png', width: 30, height: 30),
-          activeIcon:
-              Image.asset('assets/year-active.png', width: 30, height: 30),
-          title: Text('年度计算'),
-        ),
-      ],
+      items: items,
       onTap: (int index) => setState(() {
         _currentIndex = index;
       }),
