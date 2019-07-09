@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:tax_calculator/src/bizViews/SpecialItems/SpecialItems.dart';
 import 'package:tax_calculator/src/styles/theme.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
+
+import 'SpecialAttachment.style.dart' as SpecialAttachmentStyle;
 
 class SpecialAttachment extends StatefulWidget {
   @override
@@ -17,28 +20,26 @@ class _SpecialAttachmentState extends State<SpecialAttachment> {
         child: Container(
           child: Column(
             children: <Widget>[
-              Center(
-                child: Column(
-                  children: <Widget>[
-                    RichText(
-                      text: TextSpan(
-                        text: excludeMoney.toString(),
-                        style: TextStyle(fontSize: 28, color: Colors.black),
-                        children: [
-                          TextSpan(
-                            text: '/月',
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: GlobalStyle.textSecondary,
-                            ),
-                          )
-                        ],
+              Padding(
+                padding: const EdgeInsets.all(20),
+                child: Center(
+                  child: Column(
+                    children: <Widget>[
+                      RichText(
+                        text: TextSpan(
+                          text: excludeMoney.toString(),
+                          style: SpecialAttachmentStyle.totalMoney,
+                          children: [
+                            TextSpan(text: '/月', style: GlobalStyle.tipText)
+                          ],
+                        ),
                       ),
-                    ),
-                    Text('税前扣除金额', style: GlobalStyle.tipText),
-                  ],
+                      Text('税前扣除金额', style: GlobalStyle.tipText),
+                    ],
+                  ),
                 ),
-              )
+              ),
+              SpecialItems(),
             ],
           ),
         ),

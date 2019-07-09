@@ -21,8 +21,6 @@ class _IncomeOverviewState extends State<IncomeOverview> {
 
   @override
   Widget build(BuildContext context) {
-    print(incomeAfterTax);
-
     return Wrap(
       spacing: 16,
       runSpacing: 16,
