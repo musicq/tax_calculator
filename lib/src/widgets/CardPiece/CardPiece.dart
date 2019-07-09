@@ -26,11 +26,8 @@ class CardPiece extends StatelessWidget {
       child: Ink(
         decoration: CardPieceStyle.inkBoxDecoration,
         child: Container(
-          constraints:
-              smallSize ? CardPieceStyle.boxSmallSize : CardPieceStyle.boxSize,
-          padding: smallSize
-              ? CardPieceStyle.boxSmallPadding
-              : CardPieceStyle.boxPadding,
+          constraints: CardPieceStyle.boxSize(smallSize),
+          padding: CardPieceStyle.boxPadding(smallSize),
           child: Center(
             child: Column(
               children: <Widget>[
@@ -43,10 +40,7 @@ class CardPiece extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                 ),
-                Text(title,
-                    style: smallSize
-                        ? CardPieceStyle.smallTitle
-                        : CardPieceStyle.title),
+                Text(title, style: CardPieceStyle.title(smallSize)),
                 Text(subTitle, style: GlobalStyle.tipText),
               ],
             ),

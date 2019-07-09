@@ -8,13 +8,20 @@ final inkBoxDecoration = BoxDecoration(
   boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
 );
 
-const boxSize = BoxConstraints.expand(width: 170, height: 190);
-const boxSmallSize = BoxConstraints.expand(width: 150, height: 170);
+BoxConstraints boxSize(bool small) {
+  return small
+      ? BoxConstraints.expand(width: 150, height: 170)
+      : BoxConstraints.expand(width: 170, height: 190);
+}
 
-const boxPadding = EdgeInsets.only(top: 30);
-const boxSmallPadding = EdgeInsets.only(top: 24);
+EdgeInsets boxPadding(bool small) {
+  return small ? EdgeInsets.only(top: 24) : EdgeInsets.only(top: 30);
+}
 
-const title = TextStyle(fontSize: 26, color: Colors.black);
-const smallTitle = TextStyle(fontSize: 20, color: Colors.black);
+TextStyle title(bool small) {
+  return small
+      ? TextStyle(fontSize: 20, color: Colors.black)
+      : TextStyle(fontSize: 25, color: Colors.black);
+}
 
 const imgPadding = EdgeInsets.all(12);
