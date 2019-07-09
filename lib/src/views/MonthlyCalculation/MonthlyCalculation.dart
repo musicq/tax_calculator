@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/bizViews/IncomeOverview/IncomeOverview.dart';
+import 'package:tax_calculator/src/styles/theme.dart';
 import 'package:tax_calculator/src/widgets/ChipButton/ChipButton.dart';
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
@@ -14,6 +15,7 @@ class MonthlyCalculation extends StatefulWidget {
 class _MonthlyCalculationState extends State<MonthlyCalculation> {
   PageController controller = PageController(initialPage: 0);
   TextEditingController inputCtrl = TextEditingController();
+  double excludeMoney = 4500;
 
   Widget itemWrap({Widget child}) {
     return Container(
@@ -57,6 +59,31 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                         ),
                       ),
                     ],
+                  ),
+                  itemWrap(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        Text('专项附加扣除', style: GlobalStyle.tipText),
+                        Row(
+                          children: <Widget>[
+                            Padding(
+                              padding: const EdgeInsets.only(right: 5),
+                              child: Text(
+                                excludeMoney.toString(),
+                                style: MonthlyCalculationStyle.moreText,
+                              ),
+                            ),
+                            Image.asset(
+                              'assets/circle-right.png',
+                              width: 18,
+                              height: 18,
+                              fit: BoxFit.contain,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   // 收入概览
                   IncomeOverview(income: 1000),
