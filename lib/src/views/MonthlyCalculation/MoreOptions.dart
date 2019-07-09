@@ -5,10 +5,10 @@ import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 
 import 'MonthlyCalculation.style.dart' as MonthlyCalculationStyle;
 
-class SpecialAttachment extends StatelessWidget {
+class MoreOptions extends StatelessWidget {
   final PageController pageController;
 
-  SpecialAttachment({this.pageController});
+  MoreOptions({this.pageController});
 
   @override
   Widget build(BuildContext context) {

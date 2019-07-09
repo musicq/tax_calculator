@@ -6,7 +6,7 @@ import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
 
 import 'MonthlyCalculation.style.dart' as MonthlyCalculationStyle;
-import 'SpecialAttachment.dart';
+import 'MoreOptions.dart';
 
 class MonthlyCalculation extends StatefulWidget {
   @override
@@ -63,22 +63,28 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: <Widget>[
                             Text('专项附加扣除', style: GlobalStyle.tipText),
-                            Row(
-                              children: <Widget>[
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 5),
-                                  child: Text(
-                                    excludeMoney.toString(),
-                                    style: MonthlyCalculationStyle.moreText,
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed('/special-attachment');
+                              },
+                              child: Row(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.only(right: 5),
+                                    child: Text(
+                                      excludeMoney.toString(),
+                                      style: MonthlyCalculationStyle.moreText,
+                                    ),
                                   ),
-                                ),
-                                Image.asset(
-                                  'assets/circle-right.png',
-                                  width: 18,
-                                  height: 18,
-                                  fit: BoxFit.contain,
-                                )
-                              ],
+                                  Image.asset(
+                                    'assets/circle-right.png',
+                                    width: 18,
+                                    height: 18,
+                                    fit: BoxFit.contain,
+                                  )
+                                ],
+                              ),
                             ),
                           ],
                         ),
@@ -91,7 +97,7 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
               ),
             ),
           ),
-          SpecialAttachment(
+          MoreOptions(
             pageController: pageCtrl,
           ),
         ],

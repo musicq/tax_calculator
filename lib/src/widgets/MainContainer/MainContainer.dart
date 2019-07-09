@@ -22,6 +22,7 @@ class _MainContainerState extends State<MainContainer> {
               style: TextStyle(color: Colors.black87),
             ),
             backgroundColor: Colors.white,
+            iconTheme: IconThemeData(color: Colors.black87),
           )
         : null;
 
