@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/views/MonthlyCalculation/MonthlyCalculation.dart';
 
-class MainLayout extends StatefulWidget {
+class Home extends StatefulWidget {
   @override
-  _MainLayoutState createState() => _MainLayoutState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MainLayoutState extends State<MainLayout> {
+class _HomeState extends State<Home> {
   final List<Widget> _views = [
     // 月度计算
     MonthlyCalculation(),
