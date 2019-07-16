@@ -1,8 +1,8 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/bizViews/IncomeOverview/IncomeOverview.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
+import 'package:tax_calculator/src/store/store.dart';
 import 'package:tax_calculator/src/styles/theme.dart';
 import 'package:tax_calculator/src/widgets/ChipButton/ChipButton.dart';
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
@@ -11,10 +11,12 @@ import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
 import 'MonthlyCalculation.style.dart' as MonthlyCalculationStyle;
 import 'MoreOptions.dart';
 
+final defaultMoney = D('3000');
+
 class MonthlyCalculation extends StatefulWidget {
   final Decimal initMoney;
 
-  MonthlyCalculation({initMoney}) : initMoney = initMoney ?? D('0');
+  MonthlyCalculation({initMoney}) : initMoney = initMoney ?? defaultMoney;
 
   @override
   _MonthlyCalculationState createState() => _MonthlyCalculationState();
@@ -24,9 +26,6 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
   PageController pageCtrl = PageController(initialPage: 0);
   TextEditingController inputCtrl = TextEditingController();
   double excludeMoney = 4500;
-
-  // 税前薪资收入
-  final BehaviorSubject<Decimal> income$ = BehaviorSubject<Decimal>();
 
   @override
   void initState() {
@@ -39,9 +38,8 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
 
   @override
   void dispose() {
-    super.dispose();
-
     income$.close();
+    super.dispose();
   }
 
   _onSwitchPage() {
@@ -55,7 +53,8 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
   }
 
   _onIncomeChange(String v) {
-    income$.add(v == '' ? D('0') : D(v));
+    final income = double.tryParse(v);
+    income$.add(income == null ? D('0') : D(v));
   }
 
   Widget specialBar(BuildContext context) {

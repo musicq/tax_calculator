@@ -84,7 +84,8 @@ class _InputFieldState extends State<InputField> {
             onTap: _onTapInput,
             style: InputFieldStyle.inputStyle,
             decoration: InputFieldStyle.inputDecoration,
-            keyboardType: TextInputType.number,
+            keyboardType:
+                TextInputType.numberWithOptions(signed: true, decimal: true),
             onChanged: widget.onChanged,
           ),
         ],

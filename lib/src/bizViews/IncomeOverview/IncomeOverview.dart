@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/dateTime.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
+import 'package:tax_calculator/src/store/store.dart';
 import 'package:tax_calculator/src/widgets/CardPiece/CardPiece.dart';
-
-import 'IncomeOverview.service.dart';
 
 class IncomeOverview extends StatefulWidget {
   final BehaviorSubject<Decimal> income$;
@@ -29,17 +28,14 @@ class _IncomeOverviewState extends State<IncomeOverview> {
   void initState() {
     super.initState();
 
-    // 税后工资
-    _sub.add(calcIncomeAfterTax(widget.income$)
-        .listen((v) => setState(() => incomeAfterTax = v)));
-    // 个税
-    _sub.add(calcTax(widget.income$).listen((v) => setState(() => tax = v)));
     // 公积金
-    _sub.add(calcProvidentFund(widget.income$)
-        .listen((v) => setState(() => providentFund = v)));
+    _sub.add(providentFund$.listen((v) => setState(() => providentFund = v)));
     // 社保
-    _sub.add(calcInsurance(widget.income$)
-        .listen((v) => setState(() => insurance = v)));
+    _sub.add(insurance$.listen((v) => setState(() => insurance = v)));
+    // 税后工资
+    _sub.add(incomeAfterTax$.listen((v) => setState(() => incomeAfterTax = v)));
+    // 个税
+    _sub.add(tax$.listen((v) => setState(() => tax = v)));
   }
 
   @override
