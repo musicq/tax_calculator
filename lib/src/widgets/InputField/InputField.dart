@@ -44,18 +44,16 @@ class _InputFieldState extends State<InputField> {
     );
   }
 
-  _onSubmit(String v) {
-    if (widget.controller != null) {
-      widget.controller.text = toMoney(D(v));
-    }
-  }
-
   _onFocusChange() {
     final _ctrl = widget.controller;
 
     if (_focusNode.hasFocus && _ctrl != null) {
       _ctrl.selection =
           TextSelection(baseOffset: 0, extentOffset: _ctrl.text.length);
+    }
+
+    if (!_focusNode.hasFocus && _ctrl != null) {
+      widget.controller.text = toMoney(D(_ctrl.text));
     }
   }
 
@@ -107,7 +105,6 @@ class _InputFieldState extends State<InputField> {
             keyboardType:
                 TextInputType.numberWithOptions(signed: true, decimal: true),
             onChanged: widget.onChanged,
-            onSubmitted: _onSubmit,
           ),
         ],
       ),
