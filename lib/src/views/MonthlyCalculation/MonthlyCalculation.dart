@@ -23,7 +23,7 @@ class MonthlyCalculation extends StatefulWidget {
 }
 
 class _MonthlyCalculationState extends State<MonthlyCalculation> {
-  PageController pageCtrl = PageController(initialPage: 0);
+  PageController pageCtrl = PageController(initialPage: 0, keepPage: false);
   TextEditingController inputCtrl = TextEditingController();
   double excludeMoney = 4500;
 
@@ -36,25 +36,23 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
     inputCtrl.text = toMoney(widget.initMoney);
   }
 
-  @override
-  void dispose() {
-    income$.close();
-    super.dispose();
-  }
-
   _onSwitchPage() {
     pageCtrl.nextPage(
         duration: Duration(milliseconds: 300), curve: Curves.easeInOut);
   }
 
-  _onPageChange(_) {
+  _onPageChange(int pageNum) {
     // 让输入框失去焦点
     FocusScope.of(context).requestFocus(FocusNode());
+
+    // 回到第一页时刷新数据
+    if (pageNum == 0) {
+      income$.add(D(inputCtrl.text));
+    }
   }
 
   _onIncomeChange(String v) {
-    final income = double.tryParse(v);
-    income$.add(income == null ? D('0') : D(v));
+    income$.add(D(v));
   }
 
   Widget specialBar(BuildContext context) {

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/styles/theme.dart';
 
 import 'InputField.style.dart' as InputFieldStyle;
@@ -25,31 +26,50 @@ class InputField extends StatefulWidget {
 }
 
 class _InputFieldState extends State<InputField> {
+  final _focusNode = FocusNode();
+
   _onTapQuestion(BuildContext context) async {
     await showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return SimpleDialog(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(widget.tipMsg, style: InputFieldStyle.alertText),
-              ),
-            ],
-          );
-        });
+      context: context,
+      builder: (BuildContext context) {
+        return SimpleDialog(
+          children: <Widget>[
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(widget.tipMsg, style: InputFieldStyle.alertText),
+            ),
+          ],
+        );
+      },
+    );
   }
 
-  _onTapInput() {
+  _onSubmit(String v) {
+    if (widget.controller != null) {
+      widget.controller.text = toMoney(D(v));
+    }
+  }
+
+  _onFocusChange() {
     final _ctrl = widget.controller;
 
-    if (_ctrl != null) {
-      // 全选
-      _ctrl.selection = TextSelection(
-        baseOffset: 0,
-        extentOffset: _ctrl.text.length,
-      );
+    if (_focusNode.hasFocus && _ctrl != null) {
+      _ctrl.selection =
+          TextSelection(baseOffset: 0, extentOffset: _ctrl.text.length);
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+
+    _focusNode.addListener(_onFocusChange);
+  }
+
+  @override
+  void dispose() {
+    _focusNode.removeListener(_onFocusChange);
+    super.dispose();
   }
 
   @override
@@ -80,13 +100,14 @@ class _InputFieldState extends State<InputField> {
             ],
           ),
           TextField(
+            focusNode: _focusNode,
             controller: widget.controller,
-            onTap: _onTapInput,
             style: InputFieldStyle.inputStyle,
             decoration: InputFieldStyle.inputDecoration,
             keyboardType:
                 TextInputType.numberWithOptions(signed: true, decimal: true),
             onChanged: widget.onChanged,
+            onSubmitted: _onSubmit,
           ),
         ],
       ),

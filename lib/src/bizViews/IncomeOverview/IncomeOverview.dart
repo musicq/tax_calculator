@@ -40,9 +40,8 @@ class _IncomeOverviewState extends State<IncomeOverview> {
 
   @override
   void dispose() {
-    super.dispose();
-
     _sub.dispose();
+    super.dispose();
   }
 
   @override
