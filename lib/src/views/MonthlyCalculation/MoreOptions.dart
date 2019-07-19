@@ -1,6 +1,5 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
-import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/shared/documents.dart';
 import 'package:tax_calculator/src/store/store.dart';
@@ -20,12 +19,13 @@ class MoreOptions extends StatefulWidget {
 
 class _MoreOptionsState extends State<MoreOptions>
     with AutomaticKeepAliveClientMixin {
+  final remuneration = Remunerations();
   final serviceCtrl = TextEditingController();
   final manuscriptCtrl = TextEditingController();
   final royaltiesCtrl = TextEditingController();
 
-  _onChange(String v, BehaviorSubject<Decimal> stream) {
-    stream.add(D(v));
+  _onChange(String v, void setterFn(Decimal v)) {
+    setterFn(D(v));
   }
 
   @override
@@ -33,9 +33,11 @@ class _MoreOptionsState extends State<MoreOptions>
     super.initState();
 
     // restore the money
-    serviceRemuneration$.take(1).listen((v) => serviceCtrl.text = toMoney(v));
-    royalties$.take(1).listen((v) => royaltiesCtrl.text = toMoney(v));
-    manuscriptRemuneration$
+    remuneration.service$.take(1).listen((v) => serviceCtrl.text = toMoney(v));
+    remuneration.royalties$
+        .take(1)
+        .listen((v) => royaltiesCtrl.text = toMoney(v));
+    remuneration.manuscript$
         .take(1)
         .listen((v) => manuscriptCtrl.text = toMoney(v));
   }
@@ -68,7 +70,7 @@ class _MoreOptionsState extends State<MoreOptions>
                       tipMsg: kServiceRemuneration,
                       controller: serviceCtrl,
                       onChanged: (String v) =>
-                          _onChange(v, serviceRemuneration$)),
+                          _onChange(v, remuneration.setServiceRemuneration)),
                 ),
                 Container(
                   padding: MonthlyCalculationStyle.itemPadding,
@@ -77,7 +79,7 @@ class _MoreOptionsState extends State<MoreOptions>
                       tipMsg: kManuscriptRemuneration,
                       controller: manuscriptCtrl,
                       onChanged: (String v) =>
-                          _onChange(v, manuscriptRemuneration$)),
+                          _onChange(v, remuneration.setManuscriptRemuneration)),
                 ),
                 Container(
                   padding: MonthlyCalculationStyle.itemPadding,
@@ -85,7 +87,8 @@ class _MoreOptionsState extends State<MoreOptions>
                       label: '输入特许权使用费所得',
                       tipMsg: kRoyalties,
                       controller: royaltiesCtrl,
-                      onChanged: (String v) => _onChange(v, royalties$)),
+                      onChanged: (String v) =>
+                          _onChange(v, remuneration.setRoyalties)),
                 ),
               ],
             ),

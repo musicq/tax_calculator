@@ -16,11 +16,15 @@ class IncomeOverview extends StatefulWidget {
 }
 
 class _IncomeOverviewState extends State<IncomeOverview> {
+  final income = Income();
+  final providentFund = ProvidentFund();
+  final insurance = Insurance();
+
   final CompositeSubscription _sub = CompositeSubscription();
-  Decimal incomeAfterTax = D('0');
+  Decimal _incomeAfterTax = D('0');
   Decimal tax = D('0');
-  Decimal providentFund = D('0');
-  Decimal insurance = D('0');
+  Decimal _providentFund = D('0');
+  Decimal _insurance = D('0');
 
   String month = '${translateMonth(DateTime.now().month)}';
 
@@ -29,13 +33,15 @@ class _IncomeOverviewState extends State<IncomeOverview> {
     super.initState();
 
     // 公积金
-    _sub.add(providentFund$.listen((v) => setState(() => providentFund = v)));
+    _sub.add(
+        providentFund.val$.listen((v) => setState(() => _providentFund = v)));
     // 社保
-    _sub.add(insurance$.listen((v) => setState(() => insurance = v)));
+    _sub.add(insurance.val$.listen((v) => setState(() => _insurance = v)));
     // 税后工资
-    _sub.add(incomeAfterTax$.listen((v) => setState(() => incomeAfterTax = v)));
+    _sub.add(income.incomeAfterTax$
+        .listen((v) => setState(() => _incomeAfterTax = v)));
     // 个税
-    _sub.add(tax$.listen((v) => setState(() => tax = v)));
+    _sub.add(income.tax$.listen((v) => setState(() => tax = v)));
   }
 
   @override
@@ -52,7 +58,7 @@ class _IncomeOverviewState extends State<IncomeOverview> {
       children: <Widget>[
         CardPiece(
           img: 'assets/income.png',
-          title: toMoney(incomeAfterTax),
+          title: toMoney(_incomeAfterTax),
           subTitle: '$month税后收入',
           onTap: () {},
         ),
@@ -64,13 +70,13 @@ class _IncomeOverviewState extends State<IncomeOverview> {
         ),
         CardPiece(
           img: 'assets/housing.png',
-          title: toMoney(providentFund),
+          title: toMoney(_providentFund),
           subTitle: '$month公积金缴纳',
           onTap: () {},
         ),
         CardPiece(
           img: 'assets/insurance.png',
-          title: toMoney(insurance),
+          title: toMoney(_insurance),
           subTitle: '$month社保缴纳',
           onTap: () {},
         ),

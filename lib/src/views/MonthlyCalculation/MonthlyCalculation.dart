@@ -23,6 +23,8 @@ class MonthlyCalculation extends StatefulWidget {
 }
 
 class _MonthlyCalculationState extends State<MonthlyCalculation> {
+  final income = Income();
+
   PageController pageCtrl = PageController(initialPage: 0, keepPage: false);
   TextEditingController inputCtrl = TextEditingController();
   double excludeMoney = 4500;
@@ -31,7 +33,7 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
   void initState() {
     super.initState();
 
-    income$.add(widget.initMoney);
+    income.setVal(widget.initMoney);
     // give the default money
     inputCtrl.text = toMoney(widget.initMoney);
   }
@@ -47,12 +49,12 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
 
     // 回到第一页时刷新数据
     if (pageNum == 0) {
-      income$.add(D(inputCtrl.text));
+      income.setVal(D(inputCtrl.text));
     }
   }
 
   _onIncomeChange(String v) {
-    income$.add(D(v));
+    income.setVal(D(v));
   }
 
   Widget specialBar(BuildContext context) {
@@ -123,7 +125,7 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                       // 专项附加扣除 bar
                       specialBar(context),
                       // 收入概览
-                      IncomeOverview(income$: income$),
+                      IncomeOverview(income$: income.val$),
                     ],
                   )
                 ],
