@@ -9,6 +9,7 @@ class CardPiece extends StatelessWidget {
   final String subTitle;
   final Function onTap;
   final bool smallSize;
+  final bool selected;
 
   CardPiece({
     this.img,
@@ -16,6 +17,7 @@ class CardPiece extends StatelessWidget {
     this.subTitle,
     this.onTap,
     this.smallSize = false,
+    this.selected = false,
   });
 
   @override
@@ -24,7 +26,7 @@ class CardPiece extends StatelessWidget {
       onTap: onTap,
       borderRadius: CardPieceStyle.borderRadius,
       child: Ink(
-        decoration: CardPieceStyle.inkBoxDecoration,
+        decoration: CardPieceStyle.inkBoxDecoration(selected),
         child: Container(
           constraints: CardPieceStyle.boxSize(smallSize),
           padding: CardPieceStyle.boxPadding(smallSize),
@@ -34,7 +36,7 @@ class CardPiece extends StatelessWidget {
                 Padding(
                   padding: CardPieceStyle.imgPadding,
                   child: Image.asset(
-                    img,
+                    selected ? 'assets/active.png' : img,
                     width: 45,
                     height: 45,
                     fit: BoxFit.contain,

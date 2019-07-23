@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 final borderRadius = BorderRadius.circular(12);
 
-final inkBoxDecoration = BoxDecoration(
-  color: Colors.white,
-  borderRadius: borderRadius,
-  boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
-);
+final inkBoxDecoration = (bool active) => BoxDecoration(
+    color: active ? Colors.blue[50] : Colors.white,
+    borderRadius: borderRadius,
+    boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 4)],
+    border: Border.all(color: active ? Colors.blueAccent : Colors.transparent));
 
 BoxConstraints boxSize(bool small) {
   return small

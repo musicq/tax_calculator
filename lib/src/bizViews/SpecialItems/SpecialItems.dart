@@ -64,13 +64,15 @@ class _SpecialItemsState extends State<SpecialItems> {
   Set<_Items> _selected = {};
 
   _onTap(int amount, _Items type) {
-    if (_selected.contains(type)) {
-      _selected.remove(type);
-      _specialItemsState.minus(D(amount.toString()));
-    } else {
-      _selected.add(type);
-      _specialItemsState.add(D(amount.toString()));
-    }
+    setState(() {
+      if (_selected.contains(type)) {
+        _selected.remove(type);
+        _specialItemsState.minus(D(amount.toString()));
+      } else {
+        _selected.add(type);
+        _specialItemsState.add(D(amount.toString()));
+      }
+    });
   }
 
   @override
@@ -85,6 +87,7 @@ class _SpecialItemsState extends State<SpecialItems> {
                 subTitle: '${item.price}元/月',
                 smallSize: true,
                 onTap: () => _onTap(item.price, item.key),
+                selected: _selected.contains(item.key),
               ))
           .toList(),
     );
