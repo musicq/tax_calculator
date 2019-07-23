@@ -24,6 +24,7 @@ class MonthlyCalculation extends StatefulWidget {
 
 class _MonthlyCalculationState extends State<MonthlyCalculation> {
   final income = Income();
+  final specialItemsAmount = SpecialItemsAmount();
 
   PageController pageCtrl = PageController(initialPage: 0, keepPage: false);
   TextEditingController inputCtrl = TextEditingController();
@@ -57,6 +58,10 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
     income.setVal(D(v));
   }
 
+  _gotoSpecialAttachmentPage() {
+    Navigator.of(context).pushNamed('/special-attachment');
+  }
+
   Widget specialBar(BuildContext context) {
     return Container(
       padding: MonthlyCalculationStyle.itemPadding,
@@ -65,16 +70,19 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
         children: <Widget>[
           Text('专项附加扣除', style: GlobalStyle.tipText),
           GestureDetector(
-            onTap: () {
-              Navigator.of(context).pushNamed('/special-attachment');
-            },
+            onTap: _gotoSpecialAttachmentPage,
             child: Row(
               children: <Widget>[
                 Padding(
                   padding: const EdgeInsets.only(right: 5),
-                  child: Text(
-                    excludeMoney.toString(),
-                    style: MonthlyCalculationStyle.moreText,
+                  child: StreamBuilder<Decimal>(
+                    stream: specialItemsAmount.val$,
+                    builder: (context, snapshot) {
+                      return Text(
+                        toMoney(snapshot.data ?? D('0')),
+                        style: MonthlyCalculationStyle.moreText,
+                      );
+                    },
                   ),
                 ),
                 Image.asset(

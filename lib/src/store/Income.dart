@@ -26,7 +26,7 @@ class Income {
   }
 
   /// 获得税前总工资收入
-  Stream<Decimal> get val$ => Observable(_income$);
+  Stream<Decimal> get val$ => _income$;
 
   /// 设置税前总工资收入
   setVal(Decimal v) => _income$.add(v);
