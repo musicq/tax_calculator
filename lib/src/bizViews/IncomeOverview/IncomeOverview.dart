@@ -28,6 +28,10 @@ class _IncomeOverviewState extends State<IncomeOverview> {
 
   String month = '${translateMonth(DateTime.now().month)}';
 
+  _goto(String page) {
+    Navigator.of(context).pushNamed(page);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -72,7 +76,7 @@ class _IncomeOverviewState extends State<IncomeOverview> {
           img: 'assets/housing.png',
           title: toMoney(_providentFund),
           subTitle: '$month公积金缴纳',
-          onTap: () {},
+          onTap: () => _goto('/provident-fund'),
         ),
         CardPiece(
           img: 'assets/insurance.png',

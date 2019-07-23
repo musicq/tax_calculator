@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/views/Home/Home.dart';
+import 'package:tax_calculator/src/views/ProvidentFund/ProvidentFund.dart';
 import 'package:tax_calculator/src/views/SpecialAttachment/SpecialAttachment.dart';
 
 void main() => runApp(App());
@@ -13,6 +14,8 @@ class App extends StatelessWidget {
       routes: {
         // 专项附加扣除页面
         '/special-attachment': (BuildContext context) => SpecialAttachment(),
+        // 公积金缴纳
+        '/provident-fund': (BuildContext context) => ProvidentFund(),
       },
     );
   }
