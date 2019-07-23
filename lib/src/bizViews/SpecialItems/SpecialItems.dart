@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/store/store.dart';
 import 'package:tax_calculator/src/widgets/CardPiece/CardPiece.dart';
@@ -52,6 +53,7 @@ class SpecialItems extends StatefulWidget {
 
 class _SpecialItemsState extends State<SpecialItems> {
   final _specialItemsState = SpecialItemsAmount();
+  final _sub = CompositeSubscription();
 
   Set<SpecialItemOptions> _selected = {};
 
@@ -63,7 +65,14 @@ class _SpecialItemsState extends State<SpecialItems> {
   void initState() {
     super.initState();
 
-    _specialItemsState.selected$.listen((l) => setState(() => _selected = l));
+    _sub.add(_specialItemsState.selected$
+        .listen((l) => setState(() => _selected = l)));
+  }
+
+  @override
+  void dispose() {
+    _sub.clear();
+    super.dispose();
   }
 
   @override
