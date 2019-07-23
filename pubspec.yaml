@@ -44,35 +44,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/clear.png
-    - assets/month.png
-    - assets/month-2.png
-    - assets/month-active.png
-    - assets/question.png
-    - assets/share.jpg
-    - assets/survey.png
-    - assets/warning.png
-    - assets/wenhao.png
-    - assets/year.png
-    - assets/year-active.png
-    - assets/circle-right.png
-    - assets/deduction.png
-    - assets/down-arrow.png
-    - assets/right-arrow.png
-    - assets/housing.png
-    - assets/income.png
-    - assets/insurance.png
-    - assets/location.png
-    - assets/tax.png
-    - assets/active.png
-    - assets/btn.png
-    - assets/jiaoyu.png
-    - assets/jump-icon.png
-    - assets/jump-right.png
-    - assets/laoren.png
-    - assets/zhufang.png
-    - assets/zinv.png
-    - assets/zufang.png
+    - assets/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
