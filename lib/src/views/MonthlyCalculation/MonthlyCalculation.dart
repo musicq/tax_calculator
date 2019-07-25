@@ -16,7 +16,7 @@ final defaultMoney = D('3000');
 class MonthlyCalculation extends StatefulWidget {
   final Decimal initMoney;
 
-  MonthlyCalculation({initMoney}) : initMoney = initMoney ?? defaultMoney;
+  MonthlyCalculation({this.initMoney});
 
   @override
   _MonthlyCalculationState createState() => _MonthlyCalculationState();
@@ -28,15 +28,18 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
 
   PageController pageCtrl = PageController(initialPage: 0, keepPage: false);
   TextEditingController inputCtrl = TextEditingController();
-  double excludeMoney = 4500;
 
   @override
   void initState() {
     super.initState();
 
-    income.setVal(widget.initMoney);
-    // give the default money
-    inputCtrl.text = toMoney(widget.initMoney);
+    if (widget.initMoney != null) {
+      income.setVal(widget.initMoney);
+      // give the default money
+      inputCtrl.text = toMoney(widget.initMoney);
+    } else {
+      income.val$.take(1).listen((v) => inputCtrl.text = toMoney(v));
+    }
   }
 
   _onSwitchPage() {
