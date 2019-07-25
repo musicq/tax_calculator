@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:tax_calculator/src/shared/decimal.dart';
+import 'package:tax_calculator/src/store/store.dart' as Store;
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
 
 import 'ProvidentFund.style.dart' as ProvidentFundStyle;
 
-/// 缴纳类型
-enum ActionType { Highest, Lowest, No, Customize }
-
 class _Action {
   final String label;
-  final ActionType type;
+  final Store.ProvidentType type;
 
   const _Action({this.label, this.type});
 }
@@ -17,19 +16,19 @@ class _Action {
 const _actions = [
   _Action(
     label: '最高',
-    type: ActionType.Highest,
+    type: Store.ProvidentType.Highest,
   ),
   _Action(
     label: '最低',
-    type: ActionType.Lowest,
+    type: Store.ProvidentType.Lowest,
   ),
   _Action(
     label: '不缴纳',
-    type: ActionType.No,
+    type: Store.ProvidentType.No,
   ),
   _Action(
     label: '自定义',
-    type: ActionType.Customize,
+    type: Store.ProvidentType.Customize,
   ),
 ];
 
@@ -39,9 +38,17 @@ class ProvidentFund extends StatefulWidget {
 }
 
 class _ProvidentFundState extends State<ProvidentFund> {
-  final inputCtrl = TextEditingController();
+  final _inputCtrl = TextEditingController();
+  final _providentFund = Store.ProvidentFund();
 
-  ActionType _selectedType = ActionType.Highest;
+  @override
+  void initState() {
+    super.initState();
+
+    _providentFund.val$.listen((v) => _inputCtrl.text = toMoney(v));
+  }
+
+  Store.ProvidentType _selectedType = Store.ProvidentType.Highest;
 
   List<Widget> _chipsFactory() {
     return _actions
@@ -81,7 +88,7 @@ class _ProvidentFundState extends State<ProvidentFund> {
             InputField(
               showTip: false,
               label: '输入公积金缴纳基数',
-              controller: inputCtrl,
+              controller: _inputCtrl,
               onChanged: (String v) => print(v),
             ),
             Padding(
