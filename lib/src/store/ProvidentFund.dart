@@ -4,6 +4,8 @@ import 'package:tax_calculator/src/shared/decimal.dart';
 
 import 'Income.dart';
 
+enum ProvidentType { Highest, Lowest, No, Customize }
+
 /// 住房公积金
 class ProvidentFund {
   static ProvidentFund _instance;
@@ -12,12 +14,12 @@ class ProvidentFund {
   final _rate$ = BehaviorSubject<Decimal>.seeded(D('0.11'));
 
   // 公积金金额
-  Stream<Decimal> _val$ = Observable.just(D('0'));
+  ReplaySubject<Decimal> _val$ = ReplaySubject<Decimal>(maxSize: 1);
 
   ProvidentFund._internal() {
-    _val$ = CombineLatestStream.list([Income().val$, rate$])
+    CombineLatestStream.list([Income().val$, rate$])
         .map((groups) => groups[0] * groups[1])
-        .asBroadcastStream();
+        .listen((v) => _val$.add(v));
   }
 
   factory ProvidentFund() {
