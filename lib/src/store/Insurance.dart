@@ -12,12 +12,12 @@ class Insurance {
   final _rate$ = BehaviorSubject<Decimal>.seeded(D('0.11'));
 
   // 社保金额
-  Stream<Decimal> _val$ = Observable.just(D('0'));
+  ReplaySubject<Decimal> _val$ = ReplaySubject<Decimal>(maxSize: 1);
 
   Insurance._internal() {
-    _val$ = CombineLatestStream.list([Income().val$, rate$])
+    CombineLatestStream.list([Income().val$, rate$])
         .map((groups) => groups[0] * groups[1])
-        .asBroadcastStream();
+        .listen((v) => _val$.add(v));
   }
 
   factory Insurance() {
