@@ -45,7 +45,7 @@ class _ProvidentFundState extends State<ProvidentFund> {
   void initState() {
     super.initState();
 
-    _providentFund.val$.listen((v) => _inputCtrl.text = toMoney(v));
+    _providentFund.basis$.listen((v) => _inputCtrl.text = toMoney(v));
   }
 
   Store.ProvidentType _selectedType = Store.ProvidentType.Highest;
