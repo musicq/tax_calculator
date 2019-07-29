@@ -96,7 +96,7 @@ class _IncomeOverviewState extends State<IncomeOverview> {
           img: 'assets/insurance.png',
           title: toMoney(_insurance),
           subTitle: '$month社保缴纳',
-          onTap: () {},
+          onTap: () => _goto('/insurance'),
         ),
       ],
     );
