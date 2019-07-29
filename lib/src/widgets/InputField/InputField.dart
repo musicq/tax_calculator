@@ -8,6 +8,7 @@ class InputField extends StatefulWidget {
   final String label;
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
+  final ValueChanged<String> onSubmit;
   final bool showTip;
   final String tipMsg;
 
@@ -15,6 +16,7 @@ class InputField extends StatefulWidget {
     this.label,
     this.controller,
     this.onChanged,
+    this.onSubmit,
     this.showTip = true,
     this.tipMsg,
   });
@@ -105,6 +107,7 @@ class _InputFieldState extends State<InputField> {
             keyboardType:
                 TextInputType.numberWithOptions(signed: true, decimal: true),
             onChanged: widget.onChanged,
+            onSubmitted: widget.onSubmit,
           ),
         ],
       ),

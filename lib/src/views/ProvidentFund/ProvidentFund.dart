@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/store/store.dart' as Store;
@@ -41,14 +42,19 @@ class _ProvidentFundState extends State<ProvidentFund> {
   final _inputCtrl = TextEditingController();
   final _providentFund = Store.ProvidentFund();
 
+  Store.ProvidentType _selectedType = Store.ProvidentType.Highest;
+
   @override
   void initState() {
     super.initState();
 
     _providentFund.basis$.listen((v) => _inputCtrl.text = toMoney(v));
+    _providentFund.type$.listen((type) {
+      setState(() {
+        _selectedType = type;
+      });
+    });
   }
-
-  Store.ProvidentType _selectedType = Store.ProvidentType.Highest;
 
   List<Widget> _chipsFactory() {
     return _actions
@@ -63,11 +69,7 @@ class _ProvidentFundState extends State<ProvidentFund> {
                 backgroundColor: Colors.white,
                 selectedColor: Colors.blueAccent,
                 selected: _selectedType == action.type,
-                onSelected: (bool v) {
-                  setState(() {
-                    _selectedType = action.type;
-                  });
-                },
+                onSelected: (bool v) => _providentFund.setType(action.type),
               ),
             ))
         .toList();
@@ -89,13 +91,22 @@ class _ProvidentFundState extends State<ProvidentFund> {
               showTip: false,
               label: '输入公积金缴纳基数',
               controller: _inputCtrl,
-              onChanged: (String v) => print(v),
+              onSubmit: (String v) => _providentFund.setBasis(D(v)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Row(
                 children: _chipsFactory(),
               ),
+            ),
+            StreamBuilder(
+              stream: _providentFund.val$,
+              builder: (BuildContext context, AsyncSnapshot<Decimal> snapshot) {
+                if (snapshot.hasData) {
+                  return Text(toMoney(snapshot.data));
+                }
+                return Text('空的');
+              },
             )
           ],
         ),

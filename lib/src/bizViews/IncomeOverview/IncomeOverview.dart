@@ -37,15 +37,29 @@ class _IncomeOverviewState extends State<IncomeOverview> {
     super.initState();
 
     // 公积金
-    _sub.add(
-        providentFund.val$.listen((v) => setState(() => _providentFund = v)));
+    _sub.add(providentFund.val$.listen((v) {
+      if (mounted) {
+        setState(() => _providentFund = v);
+      }
+    }));
     // 社保
-    _sub.add(insurance.val$.listen((v) => setState(() => _insurance = v)));
+    _sub.add(insurance.val$.listen((v) {
+      if (mounted) {
+        setState(() => _insurance = v);
+      }
+    }));
     // 税后工资
-    _sub.add(income.incomeAfterTax$
-        .listen((v) => setState(() => _incomeAfterTax = v)));
+    _sub.add(income.incomeAfterTax$.listen((v) {
+      if (mounted) {
+        setState(() => _incomeAfterTax = v);
+      }
+    }));
     // 个税
-    _sub.add(income.tax$.listen((v) => setState(() => tax = v)));
+    _sub.add(income.tax$.listen((v) {
+      if (mounted) {
+        setState(() => tax = v);
+      }
+    }));
   }
 
   @override
