@@ -1,5 +1,5 @@
-import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/store/store.dart' as Store;
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
@@ -41,19 +41,22 @@ class ProvidentFund extends StatefulWidget {
 class _ProvidentFundState extends State<ProvidentFund> {
   final _inputCtrl = TextEditingController();
   final _providentFund = Store.ProvidentFund();
+  final _sub = CompositeSubscription();
 
   Store.ProvidentType _selectedType = Store.ProvidentType.Highest;
+  double _rate = 0;
+  String _fundVal;
 
   @override
   void initState() {
     super.initState();
 
+    _sub.add(_providentFund.val$
+        .listen((v) => setState(() => _fundVal = toMoney(v))));
+    _providentFund.type$.listen((type) => setState(() => _selectedType = type));
     _providentFund.basis$.listen((v) => _inputCtrl.text = toMoney(v));
-    _providentFund.type$.listen((type) {
-      setState(() {
-        _selectedType = type;
-      });
-    });
+    _providentFund.rate$
+        .listen((v) => setState(() => _rate = (v * D('100')).toDouble()));
   }
 
   List<Widget> _chipsFactory() {
@@ -99,15 +102,41 @@ class _ProvidentFundState extends State<ProvidentFund> {
                 children: _chipsFactory(),
               ),
             ),
-            StreamBuilder(
-              stream: _providentFund.val$,
-              builder: (BuildContext context, AsyncSnapshot<Decimal> snapshot) {
-                if (snapshot.hasData) {
-                  return Text(toMoney(snapshot.data));
-                }
-                return Text('空的');
-              },
-            )
+            Container(
+              padding: EdgeInsets.all(20),
+              decoration: ProvidentFundStyle.box,
+              child: Column(
+                children: <Widget>[
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text('个人缴纳比例'),
+                      Text('$_fundVal'),
+                    ],
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: Slider(
+                          value: _rate,
+                          min: 0.0,
+                          max: 12.0,
+                          divisions: 12,
+                          label: _rate.toString(),
+                          onChanged: (double v) {
+                            _providentFund.setRate(D(v.toString()));
+                          },
+                        ),
+                      ),
+                      SizedBox(
+                        width: 40,
+                        child: Text('$_rate%'),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),

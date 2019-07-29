@@ -32,7 +32,7 @@ class ProvidentFund {
   final _type$ = BehaviorSubject<ProvidentType>.seeded(ProvidentType.Highest);
 
   // 公积金缴纳比例
-  final _rate$ = BehaviorSubject<Decimal>.seeded(D('0.11'));
+  final _rate$ = BehaviorSubject<Decimal>.seeded(D('0.07'));
 
   // 公积金金额
   ReplaySubject<Decimal> _val$ = ReplaySubject<Decimal>(maxSize: 1);
@@ -80,7 +80,9 @@ class ProvidentFund {
 
   /// 设置公积金比例
   setRate(Decimal v) {
-    _rate$.add(v);
+    print(v.toString());
+    // 转换成小数
+    _rate$.add(v / D('100'));
   }
 
   /// 获取公积金金额
