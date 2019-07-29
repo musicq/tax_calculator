@@ -53,10 +53,17 @@ class _ProvidentFundState extends State<ProvidentFund> {
 
     _sub.add(_providentFund.val$
         .listen((v) => setState(() => _fundVal = toMoney(v))));
-    _providentFund.type$.listen((type) => setState(() => _selectedType = type));
-    _providentFund.basis$.listen((v) => _inputCtrl.text = toMoney(v));
-    _providentFund.rate$
-        .listen((v) => setState(() => _rate = (v * D('100')).toDouble()));
+    _sub.add(_providentFund.type$
+        .listen((type) => setState(() => _selectedType = type)));
+    _sub.add(_providentFund.basis$.listen((v) => _inputCtrl.text = toMoney(v)));
+    _sub.add(_providentFund.rate$
+        .listen((v) => setState(() => _rate = (v * D('100')).toDouble())));
+  }
+
+  @override
+  void dispose() {
+    _sub.dispose();
+    super.dispose();
   }
 
   List<Widget> _chipsFactory() {

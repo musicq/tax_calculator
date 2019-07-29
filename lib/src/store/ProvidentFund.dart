@@ -80,7 +80,6 @@ class ProvidentFund {
 
   /// 设置公积金比例
   setRate(Decimal v) {
-    print(v.toString());
     // 转换成小数
     _rate$.add(v / D('100'));
   }
