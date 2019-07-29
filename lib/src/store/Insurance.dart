@@ -4,6 +4,8 @@ import 'package:tax_calculator/src/shared/decimal.dart';
 
 import 'Income.dart';
 
+enum InsuranceType { Highest, Lowest, No, Customize }
+
 /// 社保
 class Insurance {
   static Insurance _instance;

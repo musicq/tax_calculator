@@ -2,21 +2,19 @@ import 'package:flutter/material.dart';
 
 import 'SelectButtonGroup.style.dart' as SelectButtonGroupStyle;
 
-enum SelectButtonType { Highest, Lowest, No, Customize }
-
-class SelectButtonGroupItem {
+class SelectButtonGroupItem<T> {
   final String label;
-  final SelectButtonType type;
+  final T type;
 
   const SelectButtonGroupItem({this.label, this.type});
 }
 
-typedef OnSelected = void Function(SelectButtonType type);
+typedef OnSelected<T> = void Function(T type);
 
-class SelectButtonGroup extends StatelessWidget {
-  final List<SelectButtonGroupItem> actions;
-  final SelectButtonType selectedType;
-  final OnSelected onSelected;
+class SelectButtonGroup<T> extends StatelessWidget {
+  final List<SelectButtonGroupItem<T>> actions;
+  final T selectedType;
+  final OnSelected<T> onSelected;
 
   SelectButtonGroup({this.actions, this.selectedType, this.onSelected});
 

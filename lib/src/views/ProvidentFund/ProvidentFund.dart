@@ -4,30 +4,24 @@ import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/store/store.dart' as Store;
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
+import 'package:tax_calculator/src/widgets/SelectButtonGroup/SelectButtonGroup.dart';
 
 import 'ProvidentFund.style.dart' as ProvidentFundStyle;
 
-class _Action {
-  final String label;
-  final Store.ProvidentType type;
-
-  const _Action({this.label, this.type});
-}
-
 const _actions = [
-  _Action(
+  SelectButtonGroupItem(
     label: '最高',
     type: Store.ProvidentType.Highest,
   ),
-  _Action(
+  SelectButtonGroupItem(
     label: '最低',
     type: Store.ProvidentType.Lowest,
   ),
-  _Action(
+  SelectButtonGroupItem(
     label: '不缴纳',
     type: Store.ProvidentType.No,
   ),
-  _Action(
+  SelectButtonGroupItem(
     label: '自定义',
     type: Store.ProvidentType.Customize,
   ),
@@ -66,25 +60,6 @@ class _ProvidentFundState extends State<ProvidentFund> {
     super.dispose();
   }
 
-  List<Widget> _chipsFactory() {
-    return _actions
-        .map((action) => Container(
-              padding: EdgeInsets.only(right: 10),
-              child: ChoiceChip(
-                shadowColor: Colors.black,
-                key: ValueKey(action.type),
-                label: Text(action.label,
-                    style: ProvidentFundStyle.labelStyle(
-                        _selectedType == action.type)),
-                backgroundColor: Colors.white,
-                selectedColor: Colors.blueAccent,
-                selected: _selectedType == action.type,
-                onSelected: (bool v) => _providentFund.setType(action.type),
-              ),
-            ))
-        .toList();
-  }
-
   @override
   Widget build(BuildContext context) {
     return MainContainer(
@@ -104,11 +79,12 @@ class _ProvidentFundState extends State<ProvidentFund> {
               onSubmit: (String v) => _providentFund.setBasis(D(v)),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: Row(
-                children: _chipsFactory(),
-              ),
-            ),
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: SelectButtonGroup<Store.ProvidentType>(
+                  actions: _actions,
+                  selectedType: _selectedType,
+                  onSelected: (type) => _providentFund.setType(type),
+                )),
             Container(
               padding: EdgeInsets.all(20),
               decoration: ProvidentFundStyle.box,
