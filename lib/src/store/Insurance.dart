@@ -30,15 +30,36 @@ class Insurance {
   // 公积金类型
   final _type$ = BehaviorSubject<InsuranceType>.seeded(InsuranceType.Highest);
 
-  // 社保比例
-  final _rate$ = BehaviorSubject<Decimal>.seeded(D('0.11'));
+  // 养老保险
+  final _pensionRate$ = BehaviorSubject<Decimal>.seeded(D('0.08'));
+  final _pensionVal$ = BehaviorSubject<Decimal>.seeded(D('0'));
 
-  // 社保金额
+  // 医疗保险
+  final _medicalRate$ = BehaviorSubject<Decimal>.seeded(D('0.02'));
+  final _medicalVal$ = BehaviorSubject<Decimal>.seeded(D('0'));
+
+  // 失业保险
+  final _unEmployRate$ = BehaviorSubject<Decimal>.seeded(D('0.005'));
+  final _unEmployVal$ = BehaviorSubject<Decimal>.seeded(D('0'));
+
+  // 社保总金额
   ReplaySubject<Decimal> _val$ = ReplaySubject<Decimal>(maxSize: 1);
 
   Insurance._internal() {
-    CombineLatestStream.list([Income().val$, rate$])
+    CombineLatestStream.list([_basis$, _pensionRate$])
         .map((groups) => groups[0] * groups[1])
+        .listen((v) => _pensionVal$.add(v));
+
+    CombineLatestStream.list([_basis$, _medicalRate$])
+        .map((groups) => groups[0] * groups[1])
+        .listen((v) => _medicalVal$.add(v));
+
+    CombineLatestStream.list([_basis$, _unEmployRate$])
+        .map((groups) => groups[0] * groups[1])
+        .listen((v) => _unEmployVal$.add(v));
+
+    CombineLatestStream.list([_pensionVal$, _medicalVal$, _unEmployVal$])
+        .map((group) => group.reduce((acc, cur) => acc + cur))
         .listen((v) => _val$.add(v));
 
     // 社保基数随着类型改变
@@ -72,15 +93,25 @@ class Insurance {
     return Insurance._instance ?? (Insurance._instance = Insurance._internal());
   }
 
-  /// 获取社保比例
-  Stream<Decimal> get rate$ => _rate$;
+  /// 获取养老保险比例
+  Observable<Decimal> get pensionRate$ => _pensionRate$;
 
-  /// 设置社保比例
-  setRate(Decimal v) {
-    _rate$.add(v);
-  }
+  /// 获取养老保险金额
+  Observable<Decimal> get pensionVal$ => _pensionVal$;
 
-  /// 获取社保金额
+  /// 获取医疗保险比例
+  Observable<Decimal> get medicalRate$ => _medicalRate$;
+
+  /// 获取医疗保险金额
+  Observable<Decimal> get medicalVal$ => _medicalVal$;
+
+  /// 获取失业保险比例
+  Observable<Decimal> get unEmployRate$ => _unEmployRate$;
+
+  /// 获取失业保险金额
+  Observable<Decimal> get unEmployVal$ => _unEmployVal$;
+
+  /// 获取社保总金额
   Stream<Decimal> get val$ => _val$;
 
   /// 获取公积金类型

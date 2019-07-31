@@ -1,3 +1,4 @@
+import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
@@ -39,6 +40,8 @@ class _InsuranceState extends State<Insurance> {
   final _sub = CompositeSubscription();
 
   static const List<String> titles = ['项目', '缴纳基数', '缴纳比例', '个人缴纳'];
+  List<List<String>> rows = [];
+  Decimal basis;
 
   Store.InsuranceType _selectedType = Store.InsuranceType.Highest;
 
@@ -46,9 +49,57 @@ class _InsuranceState extends State<Insurance> {
   void initState() {
     super.initState();
 
-    _sub.add(_insurance.basis$.listen((v) => _inputCtrl.text = toMoney(v)));
+    _sub.add(_insurance.basis$.listen((v) {
+      basis = v;
+      _inputCtrl.text = toMoney(v);
+    }));
     _sub.add(_insurance.type$
         .listen((type) => setState(() => _selectedType = type)));
+
+    final _pension$ = CombineLatestStream.list([
+      _insurance.pensionRate$,
+      _insurance.pensionVal$,
+    ]).map((x) => [
+          '养老保险',
+          toMoney(basis),
+          '${toMoney(x[0] * D('100'))}%',
+          toMoney(x[1])
+        ]);
+
+    final _medical$ = CombineLatestStream.list([
+      _insurance.medicalRate$,
+      _insurance.medicalVal$,
+    ]).map((x) => [
+          '医疗保险',
+          toMoney(basis),
+          '${toMoney(x[0] * D('100'))}%',
+          toMoney(x[1])
+        ]);
+
+    final _unEmploy$ = CombineLatestStream.list([
+      _insurance.unEmployRate$,
+      _insurance.unEmployVal$,
+    ]).map((x) => [
+          '失业保险',
+          toMoney(basis),
+          '${toMoney(x[0] * D('100'))}%',
+          toMoney(x[1])
+        ]);
+
+    final _total$ = _insurance.val$.map((x) => ['合计', '', '', toMoney(x)]);
+
+    _sub.add(CombineLatestStream.list([
+      _pension$,
+      _medical$,
+      _unEmploy$,
+      _total$,
+    ]).listen((list) => setState(() => rows = [...list])));
+  }
+
+  @override
+  void dispose() {
+    _sub.dispose();
+    super.dispose();
   }
 
   @override
@@ -82,10 +133,7 @@ class _InsuranceState extends State<Insurance> {
               padding: EdgeInsets.only(top: 15),
               child: CTable(
                 titles: titles,
-                rows: [
-                  ['1', '2', '3', '4'],
-                  ['4', '5', '6', '7'],
-                ],
+                rows: rows,
               ),
             ),
           ],

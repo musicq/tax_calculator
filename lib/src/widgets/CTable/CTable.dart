@@ -36,9 +36,7 @@ class CTable extends StatelessWidget {
         color: Colors.white,
         child: Table(
           border: TableBorder(
-            horizontalInside: BorderSide(
-              color: Colors.black26,
-            ),
+            horizontalInside: BorderSide(color: Colors.black12),
           ),
           defaultVerticalAlignment: TableCellVerticalAlignment.middle,
           children: <TableRow>[
