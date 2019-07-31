@@ -10,6 +10,13 @@ enum InsuranceType { Highest, Lowest, No, Customize }
 class Insurance {
   static Insurance _instance;
 
+  // 社保基数
+  final _basisInput$ = BehaviorSubject<Decimal>.seeded(D('0'));
+  final _basis$ = ReplaySubject<Decimal>(maxSize: 1);
+
+  // 公积金类型
+  final _type$ = BehaviorSubject<InsuranceType>.seeded(InsuranceType.Highest);
+
   // 社保比例
   final _rate$ = BehaviorSubject<Decimal>.seeded(D('0.11'));
 
@@ -36,4 +43,12 @@ class Insurance {
 
   /// 获取社保金额
   Stream<Decimal> get val$ => _val$;
+
+  /// 获取公积金类型
+  Observable<InsuranceType> get type$ => _type$;
+
+  /// 设置社保基数
+  setBasis(Decimal v) {
+    _basisInput$.add(v);
+  }
 }

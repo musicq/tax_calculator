@@ -50,6 +50,7 @@ class _InsuranceState extends State<Insurance> {
               showTip: false,
               label: '输入社保缴纳基数',
               controller: _inputCtrl,
+              decimal: false,
               //              onSubmit: (String v) => _providentFund.setBasis(D(v)),
             ),
             Padding(

@@ -11,6 +11,7 @@ class InputField extends StatefulWidget {
   final ValueChanged<String> onSubmit;
   final bool showTip;
   final String tipMsg;
+  final bool decimal;
 
   InputField({
     this.label,
@@ -19,6 +20,7 @@ class InputField extends StatefulWidget {
     this.onSubmit,
     this.showTip = true,
     this.tipMsg,
+    this.decimal = true,
   });
 
   @override
@@ -105,7 +107,7 @@ class _InputFieldState extends State<InputField> {
             style: InputFieldStyle.inputStyle,
             decoration: InputFieldStyle.inputDecoration,
             keyboardType:
-                TextInputType.numberWithOptions(signed: true, decimal: true),
+                TextInputType.numberWithOptions(decimal: widget.decimal),
             onChanged: widget.onChanged,
             onSubmitted: widget.onSubmit,
           ),

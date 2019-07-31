@@ -76,6 +76,7 @@ class _ProvidentFundState extends State<ProvidentFund> {
               showTip: false,
               label: '输入公积金缴纳基数',
               controller: _inputCtrl,
+              decimal: false,
               onSubmit: (String v) => _providentFund.setBasis(D(v)),
             ),
             Padding(

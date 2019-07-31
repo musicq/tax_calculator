@@ -1,21 +1,14 @@
 import 'package:flutter/material.dart';
 
-class MainContainer extends StatefulWidget {
+class MainContainer extends StatelessWidget {
   final bool showAppBar;
   final Widget body;
 
   MainContainer({this.body, this.showAppBar = true});
 
   @override
-  State<StatefulWidget> createState() {
-    return _MainContainerState();
-  }
-}
-
-class _MainContainerState extends State<MainContainer> {
-  @override
   Widget build(BuildContext context) {
-    final appBar = widget.showAppBar
+    final appBar = showAppBar
         ? AppBar(
             title: const Text(
               '报税通',
@@ -28,7 +21,10 @@ class _MainContainerState extends State<MainContainer> {
 
     return Scaffold(
       appBar: appBar,
-      body: widget.body,
+      body: GestureDetector(
+        onTap: () => FocusScope.of(context).requestFocus(FocusNode()),
+        child: Container(color: Colors.transparent, child: body),
+      ),
     );
   }
 }
