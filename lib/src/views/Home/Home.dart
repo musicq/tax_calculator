@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/views/MonthlyCalculation/MonthlyCalculation.dart';
+import 'package:tax_calculator/src/views/YearlyCalculation/YearlyCalculation.dart';
 
 // bottom navigation
 const _kNavigationItems = [
@@ -25,7 +26,7 @@ class _HomeState extends State<Home> {
   List<Widget> _views = [
     // 月度计算
     MonthlyCalculation(initMoney: D('2000')),
-    Text('年度计算'),
+    YearlyCalculation(),
   ];
 
   int _currentIndex = 0;
