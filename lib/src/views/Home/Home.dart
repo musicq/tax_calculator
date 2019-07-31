@@ -3,7 +3,7 @@ import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/views/MonthlyCalculation/MonthlyCalculation.dart';
 
 // bottom navigation
-const kNavigationItems = [
+const _kNavigationItems = [
   {
     'icon': 'assets/month.png',
     'activeIcon': 'assets/month-active.png',
@@ -31,7 +31,7 @@ class _HomeState extends State<Home> {
   int _currentIndex = 0;
 
   Widget bottomNavigationBarWidget() {
-    final items = kNavigationItems
+    final items = _kNavigationItems
         .map((var item) => BottomNavigationBarItem(
             icon: Image.asset(item['icon'], width: 30, height: 30),
             activeIcon: Image.asset(item['activeIcon'], width: 30, height: 30),
@@ -43,9 +43,7 @@ class _HomeState extends State<Home> {
       selectedItemColor: Colors.black,
       unselectedItemColor: Colors.black38,
       items: items,
-      onTap: (int index) => setState(() {
-        _currentIndex = index;
-      }),
+      onTap: (int index) => setState(() => _currentIndex = index),
     );
   }
 

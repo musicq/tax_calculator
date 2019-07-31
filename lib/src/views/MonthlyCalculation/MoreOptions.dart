@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/shared/documents.dart';
 import 'package:tax_calculator/src/store/store.dart';
@@ -17,12 +18,13 @@ class MoreOptions extends StatefulWidget {
   _MoreOptionsState createState() => _MoreOptionsState();
 }
 
-class _MoreOptionsState extends State<MoreOptions>
-    with AutomaticKeepAliveClientMixin {
+class _MoreOptionsState extends State<MoreOptions> {
   final remuneration = Remunerations();
   final serviceCtrl = TextEditingController();
   final manuscriptCtrl = TextEditingController();
   final royaltiesCtrl = TextEditingController();
+
+  final _sub = CompositeSubscription();
 
   _onChange(String v, void setterFn(Decimal v)) {
     setterFn(D(v));
@@ -33,21 +35,29 @@ class _MoreOptionsState extends State<MoreOptions>
     super.initState();
 
     // restore the money
-    remuneration.service$.take(1).listen((v) => serviceCtrl.text = toMoney(v));
-    remuneration.royalties$
+    _sub.add(remuneration.service$
         .take(1)
-        .listen((v) => royaltiesCtrl.text = toMoney(v));
-    remuneration.manuscript$
+        .listen((v) => serviceCtrl.text = toMoney(v)));
+    _sub.add(remuneration.royalties$
         .take(1)
-        .listen((v) => manuscriptCtrl.text = toMoney(v));
+        .listen((v) => royaltiesCtrl.text = toMoney(v)));
+    _sub.add(remuneration.manuscript$
+        .take(1)
+        .listen((v) => manuscriptCtrl.text = toMoney(v)));
+  }
+
+  @override
+  void dispose() {
+    _sub.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Container(
-        padding: MonthlyCalculationStyle.container,
-        child: Stack(
+    return ListView(
+      padding: MonthlyCalculationStyle.container,
+      children: [
+        Stack(
           children: <Widget>[
             Align(
               alignment: Alignment.topRight,
@@ -93,11 +103,8 @@ class _MoreOptionsState extends State<MoreOptions>
               ],
             ),
           ],
-        ),
-      ),
+        )
+      ],
     );
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }

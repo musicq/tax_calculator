@@ -1,5 +1,6 @@
 import 'package:decimal/decimal.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/bizViews/IncomeOverview/IncomeOverview.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/store/store.dart';
@@ -25,6 +26,7 @@ class MonthlyCalculation extends StatefulWidget {
 class _MonthlyCalculationState extends State<MonthlyCalculation> {
   final income = Income();
   final specialItemsAmount = SpecialItemsAmount();
+  final _sub = CompositeSubscription();
 
   PageController pageCtrl = PageController(initialPage: 0, keepPage: false);
   TextEditingController inputCtrl = TextEditingController();
@@ -38,8 +40,14 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
       // give the default money
       inputCtrl.text = toMoney(widget.initMoney);
     } else {
-      income.val$.take(1).listen((v) => inputCtrl.text = toMoney(v));
+      _sub.add(income.val$.take(1).listen((v) => inputCtrl.text = toMoney(v)));
     }
+  }
+
+  @override
+  void dispose() {
+    _sub.dispose();
+    super.dispose();
   }
 
   _onSwitchPage() {
@@ -109,10 +117,10 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
         controller: pageCtrl,
         onPageChanged: _onPageChange,
         children: <Widget>[
-          SingleChildScrollView(
-            child: Container(
-              padding: MonthlyCalculationStyle.container,
-              child: Stack(
+          ListView(
+            padding: MonthlyCalculationStyle.container,
+            children: [
+              Stack(
                 children: [
                   Align(
                     alignment: Alignment.topRight,
@@ -140,8 +148,8 @@ class _MonthlyCalculationState extends State<MonthlyCalculation> {
                     ],
                   )
                 ],
-              ),
-            ),
+              )
+            ],
           ),
           MoreOptions(
             pageController: pageCtrl,

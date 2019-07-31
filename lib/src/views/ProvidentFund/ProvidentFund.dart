@@ -63,66 +63,63 @@ class _ProvidentFundState extends State<ProvidentFund> {
   @override
   Widget build(BuildContext context) {
     return MainContainer(
-      body: Container(
+      body: ListView(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Text('公积金缴纳', style: ProvidentFundStyle.title),
-            ),
-            InputField(
-              showTip: false,
-              label: '输入公积金缴纳基数',
-              controller: _inputCtrl,
-              decimal: false,
-              onSubmit: (String v) => _providentFund.setBasis(D(v)),
-            ),
-            Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
-                child: SelectButtonGroup<Store.ProvidentType>(
-                  actions: _actions,
-                  selectedType: _selectedType,
-                  onSelected: (type) => _providentFund.setType(type),
-                )),
-            Container(
-              padding: EdgeInsets.all(20),
-              decoration: ProvidentFundStyle.box,
-              child: Column(
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('个人缴纳比例'),
-                      Text('$_fundVal'),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: Slider(
-                          value: _rate,
-                          min: 0.0,
-                          max: 12.0,
-                          divisions: 12,
-                          label: _rate.toString(),
-                          onChanged: (double v) {
-                            _providentFund.setRate(D(v.toString()));
-                          },
-                        ),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text('公积金缴纳', style: ProvidentFundStyle.title),
+          ),
+          InputField(
+            showTip: false,
+            label: '输入公积金缴纳基数',
+            controller: _inputCtrl,
+            decimal: false,
+            onSubmit: (String v) => _providentFund.setBasis(D(v)),
+          ),
+          Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: SelectButtonGroup<Store.ProvidentType>(
+                actions: _actions,
+                selectedType: _selectedType,
+                onSelected: (type) => _providentFund.setType(type),
+              )),
+          Container(
+            padding: EdgeInsets.all(20),
+            decoration: ProvidentFundStyle.box,
+            child: Column(
+              children: <Widget>[
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text('个人缴纳比例'),
+                    Text('$_fundVal'),
+                  ],
+                ),
+                Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: Slider(
+                        value: _rate,
+                        min: 0.0,
+                        max: 12.0,
+                        divisions: 12,
+                        label: _rate.toString(),
+                        onChanged: (double v) {
+                          _providentFund.setRate(D(v.toString()));
+                        },
                       ),
-                      SizedBox(
-                        width: 40,
-                        child: Text('$_rate%'),
-                      )
-                    ],
-                  )
-                ],
-              ),
+                    ),
+                    SizedBox(
+                      width: 40,
+                      child: Text('$_rate%'),
+                    )
+                  ],
+                )
+              ],
             ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }

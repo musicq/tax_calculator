@@ -105,39 +105,36 @@ class _InsuranceState extends State<Insurance> {
   @override
   Widget build(BuildContext context) {
     return MainContainer(
-      body: Container(
+      body: ListView(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 20),
-              child: Text('社保缴纳', style: InsuranceStyle.title),
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(bottom: 20),
+            child: Text('社保缴纳', style: InsuranceStyle.title),
+          ),
+          InputField(
+            showTip: false,
+            label: '输入社保缴纳基数',
+            controller: _inputCtrl,
+            decimal: false,
+            onSubmit: (String v) => _insurance.setBasis(D(v)),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: SelectButtonGroup<Store.InsuranceType>(
+              actions: _actions,
+              selectedType: _selectedType,
+              onSelected: (t) => _insurance.setType(t),
             ),
-            InputField(
-              showTip: false,
-              label: '输入社保缴纳基数',
-              controller: _inputCtrl,
-              decimal: false,
-              onSubmit: (String v) => _insurance.setBasis(D(v)),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 15),
+            child: CTable(
+              titles: titles,
+              rows: rows,
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
-              child: SelectButtonGroup<Store.InsuranceType>(
-                actions: _actions,
-                selectedType: _selectedType,
-                onSelected: (t) => _insurance.setType(t),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: 15),
-              child: CTable(
-                titles: titles,
-                rows: rows,
-              ),
-            ),
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
