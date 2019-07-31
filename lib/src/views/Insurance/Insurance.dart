@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
+import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/store/store.dart' as Store;
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
@@ -32,7 +34,19 @@ class Insurance extends StatefulWidget {
 
 class _InsuranceState extends State<Insurance> {
   final _inputCtrl = TextEditingController();
-  final _selectedType = Store.InsuranceType.Lowest;
+  final _insurance = Store.Insurance();
+  final _sub = CompositeSubscription();
+
+  Store.InsuranceType _selectedType = Store.InsuranceType.Highest;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _sub.add(_insurance.basis$.listen((v) => _inputCtrl.text = toMoney(v)));
+    _sub.add(_insurance.type$
+        .listen((type) => setState(() => _selectedType = type)));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,14 +65,14 @@ class _InsuranceState extends State<Insurance> {
               label: '输入社保缴纳基数',
               controller: _inputCtrl,
               decimal: false,
-              //              onSubmit: (String v) => _providentFund.setBasis(D(v)),
+              onSubmit: (String v) => _insurance.setBasis(D(v)),
             ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: SelectButtonGroup<Store.InsuranceType>(
                 actions: _actions,
                 selectedType: _selectedType,
-                onSelected: (t) => print(t),
+                onSelected: (t) => _insurance.setType(t),
               ),
             ),
           ],

@@ -8,12 +8,12 @@ import 'Income.dart';
 
 enum ProvidentType { Highest, Lowest, No, Customize }
 
-const lowestLine = 2050.00;
-const highestLine = 25983.00;
+const _lowestLine = 2050.00;
+const _highestLine = 25983.00;
 
-const Map<ProvidentType, double> typeToMoney = {
-  ProvidentType.Highest: highestLine,
-  ProvidentType.Lowest: lowestLine,
+const Map<ProvidentType, double> _typeToMoney = {
+  ProvidentType.Highest: _highestLine,
+  ProvidentType.Lowest: _lowestLine,
   ProvidentType.No: 0,
   ProvidentType.Customize: -1,
 };
@@ -46,7 +46,7 @@ class ProvidentFund {
     // 公积金基数随着类型改变
     _type$.distinct().listen((ProvidentType type) {
       if (type != ProvidentType.Customize) {
-        _basisInput$.add(D(typeToMoney[type].toString()));
+        _basisInput$.add(D(_typeToMoney[type].toString()));
       }
     });
 
@@ -54,13 +54,13 @@ class ProvidentFund {
     MergeStream([_basisInput$.distinct(), _income.val$.distinct()])
         .skip(2)
         .distinct()
-        .map((v) => max(lowestLine, min(highestLine, v.toDouble())))
+        .map((v) => max(_lowestLine, min(_highestLine, v.toDouble())))
         .transform(DoStreamTransformer(onData: (double v) {
-      if (v == typeToMoney[ProvidentType.Highest]) {
+      if (v == _typeToMoney[ProvidentType.Highest]) {
         _type$.add(ProvidentType.Highest);
-      } else if (v == typeToMoney[ProvidentType.Lowest]) {
+      } else if (v == _typeToMoney[ProvidentType.Lowest]) {
         _type$.add(ProvidentType.Lowest);
-      } else if (v == typeToMoney[ProvidentType.No]) {
+      } else if (v == _typeToMoney[ProvidentType.No]) {
         _type$.add(ProvidentType.No);
       } else {
         _type$.add(ProvidentType.Customize);
