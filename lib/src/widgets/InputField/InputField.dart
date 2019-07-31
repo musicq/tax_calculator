@@ -58,6 +58,9 @@ class _InputFieldState extends State<InputField> {
 
     if (!_focusNode.hasFocus && _ctrl != null) {
       widget.controller.text = toMoney(D(_ctrl.text));
+      if (widget.onSubmit != null) {
+        widget.onSubmit(_ctrl.text);
+      }
     }
   }
 
