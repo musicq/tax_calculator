@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:tax_calculator/src/shared/decimal.dart';
 import 'package:tax_calculator/src/store/store.dart' as Store;
+import 'package:tax_calculator/src/widgets/CTable/CTable.dart';
 import 'package:tax_calculator/src/widgets/InputField/InputField.dart';
 import 'package:tax_calculator/src/widgets/MainContainer/MainContainer.dart';
 import 'package:tax_calculator/src/widgets/SelectButtonGroup/SelectButtonGroup.dart';
@@ -73,6 +74,16 @@ class _InsuranceState extends State<Insurance> {
                 actions: _actions,
                 selectedType: _selectedType,
                 onSelected: (t) => _insurance.setType(t),
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.only(top: 15),
+              child: CTable(
+                titleList: ['项目', '缴纳基数', '缴纳比例', '个人缴纳'],
+                rows: [
+                  ['1', '2', '3', '4'],
+                  ['4', '5', '6', '7'],
+                ],
               ),
             ),
           ],
