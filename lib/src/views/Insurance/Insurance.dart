@@ -38,6 +38,8 @@ class _InsuranceState extends State<Insurance> {
   final _insurance = Store.Insurance();
   final _sub = CompositeSubscription();
 
+  static const List<String> titles = ['项目', '缴纳基数', '缴纳比例', '个人缴纳'];
+
   Store.InsuranceType _selectedType = Store.InsuranceType.Highest;
 
   @override
@@ -79,7 +81,7 @@ class _InsuranceState extends State<Insurance> {
             Padding(
               padding: EdgeInsets.only(top: 15),
               child: CTable(
-                titleList: ['项目', '缴纳基数', '缴纳比例', '个人缴纳'],
+                titles: titles,
                 rows: [
                   ['1', '2', '3', '4'],
                   ['4', '5', '6', '7'],

@@ -20,13 +20,13 @@ class _Cell extends StatelessWidget {
 }
 
 class CTable extends StatelessWidget {
-  final List<String> titleList;
+  final List<String> titles;
   final List<List<String>> rows;
 
-  CTable({this.titleList, this.rows})
-      : assert(titleList != null),
+  CTable({this.titles, this.rows})
+      : assert(titles != null),
         assert(rows != null),
-        assert(rows.every((row) => row.length == titleList.length));
+        assert(rows.every((row) => row.length == titles.length));
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class CTable extends StatelessWidget {
           children: <TableRow>[
             TableRow(
               decoration: BoxDecoration(color: Colors.indigo[300]),
-              children: titleList
+              children: titles
                   .map((title) => _Cell(
                         title: title,
                         primary: true,
