@@ -28,7 +28,7 @@ class IncomeSummaryPanel extends StatelessWidget {
 
   Widget panel({Widget child}) {
     return Opacity(
-      opacity: 0.9,
+      opacity: 0.95,
       child: Container(
         constraints: BoxConstraints.expand(height: 260),
         decoration: Style.boxStyle,
