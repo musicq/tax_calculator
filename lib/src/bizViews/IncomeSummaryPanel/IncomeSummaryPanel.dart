@@ -28,7 +28,7 @@ class IncomeSummaryPanel extends StatelessWidget {
 
   Widget panel({Widget child}) {
     return Opacity(
-      opacity: 0.95,
+      opacity: 0.99,
       child: Container(
         constraints: BoxConstraints.expand(height: 260),
         decoration: Style.boxStyle,
@@ -78,7 +78,7 @@ class IncomeSummaryPanel extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Image.asset(
-                          'assets/question.png',
+                          'assets/wenhao.png',
                           width: 24,
                           height: 24,
                           fit: BoxFit.contain,
